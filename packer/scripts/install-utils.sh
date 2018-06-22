@@ -1,15 +1,38 @@
 #!/bin/bash
 set -eu -o pipefail
 
-echo "Updating awscli..."
-sudo yum update -y awscli
+echo "Installing awscli..."
+sudo apt-get install -y awscli
+
+echo "Installing cloud formation helpers..."
+wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-1.4-8.tar.gz
+tar zxf aws-cfn-bootstrap-1.4-8.tar.gz
+(
+  cd aws-cfn-bootstrap-1.4
+  sudo pip2 install --upgrade .
+)
+
+cat > cfn-hup.service <<EOF
+[Unit]
+Description=Cloud formation helper daemon
+[Service]
+ExecStart=/usr/local/bin/cfn-hup
+Restart=always
+Type=simple
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo cp cfn-hup.service /etc/systemd/system/cfn-hup.service
+sudo ln -s /usr/local /opt/aws  # Buildkite scripts assume /opt/aws/bin/...
+
+# Avoid python3
+sudo sed -i 's#!/usr/bin/env python#!/usr/bin/env python2#' /opt/aws/bin/cfn-*
 
 echo "Installing zip utils..."
-sudo yum update -y -q
-sudo yum install -y zip unzip
+sudo apt-get install -y zip unzip
 
 echo "Installing bats..."
-sudo yum install -y git
+sudo apt-get install -y git
 sudo git clone https://github.com/sstephenson/bats.git /tmp/bats
 sudo /tmp/bats/install.sh /usr/local
 

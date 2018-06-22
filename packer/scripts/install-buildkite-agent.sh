@@ -3,8 +3,7 @@
 set -eu -o pipefail
 
 echo "Installing dependencies..."
-sudo yum update -y -q
-sudo yum install -y -q git-core
+sudo apt-get install -y -q git
 
 echo "Creating buildkite-agent user and group..."
 sudo useradd --base-dir /var/lib --uid 2000 buildkite-agent

@@ -3,13 +3,13 @@
     {
       "type": "amazon-ebs",
       "region": "us-east-1",
-      "source_ami": "ami-b270a8cf",
+      "source_ami": "ami-6d720012",
       "instance_type": "i3.large",
       "spot_price": "auto",
       "spot_price_auto_product": "Linux/UNIX (Amazon VPC)",
-      "ssh_username": "ec2-user",
-      "ami_name": "buildkite-stack-{{isotime | clean_ami_name}}",
-      "ami_description": "Buildkite Elastic Stack (Amazon Linux 2 LTS Candidate 2 w/ docker)",
+      "ssh_username": "ubuntu",
+      "ami_name": "solana-buildkite-stack-{{isotime | clean_ami_name}}",
+      "ami_description": "Solana Buildkite Elastic Stack (Ubuntu 16.04-based)",
       "ami_groups": ["all"]
     }
   ],
@@ -30,11 +30,19 @@
     },
     {
       "type": "shell",
-      "script": "scripts/install-awslogs.sh"
+      "script": "scripts/install-rust.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-snapcraft.sh"
     },
     {
       "type": "shell",
       "script": "scripts/install-lifecycled.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-cuda.sh"
     },
     {
       "type": "shell",
