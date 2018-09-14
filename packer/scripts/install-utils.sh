@@ -31,6 +31,9 @@ sudo sed -i 's#!/usr/bin/env python#!/usr/bin/env python2#' /opt/aws/bin/cfn-*
 echo "Installing zip utils..."
 sudo apt-get install -y zip unzip
 
+echo "Installing multilog..."
+sudo apt-get install -y daemontools
+
 echo "Installing bats..."
 sudo apt-get install -y git
 sudo git clone https://github.com/sstephenson/bats.git /tmp/bats
